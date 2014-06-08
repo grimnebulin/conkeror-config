@@ -2,9 +2,9 @@
 
 const main = $("div#main-content");
 
-main.prevAll()
-    .add(main.nextAll())
-    .add(main.parent().nextAll())
-    .add("div.ad")
-    .add("iframe")
-    .remove();
+main.prevAll().remove();
+main.nextAll().remove();
+main.parent().nextAll().remove();
+
+$("div.ad").remove();
+$("iframe").remove();
