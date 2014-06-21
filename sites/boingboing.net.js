@@ -5,3 +5,7 @@
 //  comments button.
 
 $("div#comments").prependTo("div.post[id^='post-']");
+
+//  Delete header.
+
+$("header.ember-view").remove();
