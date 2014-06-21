@@ -1,12 +1,10 @@
-autoload_disqus_comments();
+// autoload_disqus_comments();
 
 //  Remove annoying ads.
 
-$.onSubtreeMutation(function () {
-    this.find("div.tynt-close-btn").clickthis();
-});
+$.whenFound("#tallboy-rising-star-outer", remove_it);
 
-$.whenFound("#uptab:visible", function () { this.clickthis() });
+$.whenFound("#slideup", remove_it);
 
 $.whenFound("iframe[id^='google_ads_iframe']", function () {
     this.closest("div.widget").remove();
