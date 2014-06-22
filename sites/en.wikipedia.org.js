@@ -20,7 +20,7 @@ const piratebayUrl = function (title, season, episode) {
 };
 
 maybe(buffer.document.title.match(/\blist of (.+) episodes\b/i)).foreach(([_, title]) => {
-    $("h3 > span[id^='Season_']").each(function () {
+    $("h3 > span[id]").each(function () {
         maybe(this.id.match(/^Season_(\d+)/)).foreach(([_, season]) => {
             $(this.parentNode)
                 .xpath("following-sibling::table[1]//tr/*[2]")
