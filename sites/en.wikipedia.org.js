@@ -13,23 +13,19 @@
 
 const pad = function (str) { return str.length < 2 ? pad("0" + str) : str };
 
-maybe(buffer.document.title.match(/\blist of (.+) episodes\b/i))
-    .foreach(([_, title]) => {
-        $("h3 > span[id^='Season_']").each(function () {
-            maybe(this.id.match(/^Season_(\d+)/)).foreach(([_, season]) => {
-                $(this.parentNode)
-                    .nextAll("table")
-                    .first()
-                    .find("td:nth-child(2)")
-                    .each(function () {
-                        const episode = $(this).text();
-                        if (/^\d+$/.test(episode)) {
-                            $("<a/>")
-                                .attr("href", "http://thepiratebay.se/search/" + encodeURIComponent(title.toLowerCase() + " s" + pad(season) + "e" + pad(episode)))
-                                .html("<sup>*</sup>")
-                                .appendTo(this);
-                        }
-                    });
-            });
+maybe(buffer.document.title.match(/\blist of (.+) episodes\b/i)).foreach(([_, title]) => {
+    $("h3 > span[id^='Season_']").each(function () {
+        maybe(this.id.match(/^Season_(\d+)/)).foreach(([_, season]) => {
+            $(this.parentNode)
+                .xpath("following-sibling::table[1]//tr/*[2]")
+                .each(function () {
+                    const episode = $(this).text();
+                    if (/^\d+$/.test(episode)) {
+                        $("<a><sup>*</sup></a>")
+                            .attr("href", "http://thepiratebay.se/search/" + encodeURIComponent(title.toLowerCase() + " s" + pad(season) + "e" + pad(episode)))
+                            .appendTo(this);
+                    }
+                });
         });
     });
+});
