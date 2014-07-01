@@ -27,7 +27,7 @@ maybe(buffer.document.title.match(/\blist of (.+) episodes\b/i)).foreach(([_, ti
                 .each(function () {
                     const episode = $(this).text();
                     if (/^\d+$/.test(episode)) {
-                        $("<a><sup>*</sup></a>")
+                        $("<a><sup>PB</sup></a>")
                             .attr("href", piratebayUrl(title, season, episode))
                             .appendTo(this);
                     }
