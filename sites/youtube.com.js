@@ -1,3 +1,11 @@
+//
+//  This code inserts hyperlinks on a YouTube video page to all of the
+//  raw video files available on that page.
+//
+//  I didn't know before writing this code that Conkeror's YouTube
+//  mode can basically already do this.  Oh well!
+//
+
 const vars_of = function (str) {
     return [
         param.split(/=/).map(decodeURIComponent)
