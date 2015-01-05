@@ -14,12 +14,14 @@
 const pad = function (str) { return str.length < 2 ? pad("0" + str) : str };
 
 const piratebayUrl = function (title, season, episode) {
-    return "http://thepiratebay.se/search/" + encodeURIComponent(
+    return "http://thepiratebay.cr/search/" + encodeURIComponent(
         title.toLowerCase() + " s" + pad(season) + "e" + pad(episode)
     );
 };
 
-maybe(buffer.document.title.match(/\blist of (.+) episodes\b/i)).foreach(([_, title]) => {
+maybe(
+    buffer.document.title.match(/\blist of (.+) episodes\b/i)
+).foreach(([_, title]) => {
     $("h3 > span[id]").each(function () {
         maybe(this.id.match(/^Season_(\d+)/)).foreach(([_, season]) => {
             $(this.parentNode)
