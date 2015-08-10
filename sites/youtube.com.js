@@ -6,6 +6,16 @@
 //  mode can basically already do this.  Oh well!
 //
 
+const match = buffer.current_uri.asciiSpec.match(/[?&]v=(\w+)/);
+
+if (match) {
+    my_request(
+        "http://www.youtube.com/get_video_info?video_id=" + match[1],
+        yt_info_callback,
+        "text"
+    );
+}
+
 const vars_of = function (str) {
     return [
         param.split(/=/).map(decodeURIComponent)
@@ -35,8 +45,8 @@ const parallel_iterate = function () {
     }
 };
 
-$("embed#movie_player[flashvars]").each(function () {
-    const flashvars = object_from(vars_of(this.getAttribute("flashvars")));
+function yt_info_callback(str) {
+    const flashvars = object_from(vars_of(str));
     const format = object_from(
         x.split(/\//) for (x of flashvars.fmt_list.split(/,/))
     );
@@ -59,4 +69,4 @@ $("embed#movie_player[flashvars]").each(function () {
         for ([url, itag, quality, type] of
             parallel_iterate(vids.url, vids.itag, vids.quality, vids.type))
     ]);
-});
+}
