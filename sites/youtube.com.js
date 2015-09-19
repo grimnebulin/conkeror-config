@@ -6,7 +6,7 @@
 //  mode can basically already do this.  Oh well!
 //
 
-const match = buffer.current_uri.asciiSpec.match(/[?&]v=(\w+)/);
+const match = buffer.current_uri.asciiSpec.match(/[?&]v=([-\w]+)/);
 
 if (match) {
     my_request(
