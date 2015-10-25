@@ -91,12 +91,12 @@ define_webjump("bb", "http://bitbucket.org/");
 }
 
 {
-    let NETFLIX_URL = "http://movies.netflix.com/";
+    let NETFLIX_URL = "http://dvd.netflix.com/";
     let NETFLIX_QUEUE_URL = NETFLIX_URL + "Queue";
-    let NETFLIX_INSTANT_QUEUE_URL = NETFLIX_QUEUE_URL + "?qtype=ED";
+    let NETFLIX_INSTANT_QUEUE_URL = NETFLIX_QUEUE_URL + "?qtype=DD";
 
     define_webjump(
-        "nf", NETFLIX_URL + "WiSearch?v1=%s", $alternative = NETFLIX_QUEUE_URL
+        "nf", NETFLIX_URL + "Search?v1=%s", $alternative = NETFLIX_QUEUE_URL
     );
 
     define_webjump("nfi", NETFLIX_INSTANT_QUEUE_URL);
