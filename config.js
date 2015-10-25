@@ -193,12 +193,11 @@ function next_page(I) {
     const $     = $$(I);
     const comps = $.window.location.pathname.match(/[^\/]+/g);
     const url   = numeric_params($.window.location.search);
-    const has   = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
     const links = $("a").filter(function () {
         const param = numeric_params(this.href);
         for (let key in param) {
-            if (has(url, key)) {
+            if (hasOwn(url, key)) {
                 return param[key] == url[key] + 1;
             } else if (param[key] == 2) {
                 return true;
