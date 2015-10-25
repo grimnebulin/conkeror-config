@@ -132,12 +132,11 @@ define_webjump(
     let FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
 
     function firebug(I) {
-        $$(I).script({ src: firebug_url, onload: "firebug.init()" })
+        $$(I).script({ src: FIREBUG_URL, onload: "firebug.init()" })
             .appendTo("body");
     }
 
     interactive("fb", "open firebug lite", firebug);
-
 }
 
 {
