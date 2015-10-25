@@ -9,11 +9,11 @@
 const match = buffer.current_uri.asciiSpec.match(/[?&]v=([-\w]+)/);
 
 if (match) {
-    my_request(
+    new WebRequest(
         "http://www.youtube.com/get_video_info?video_id=" + match[1],
         yt_info_callback,
         "text"
-    );
+    ).start();
 }
 
 const vars_of = function (str) {
