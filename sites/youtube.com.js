@@ -11,8 +11,7 @@ const match = buffer.current_uri.asciiSpec.match(/[?&]v=([-\w]+)/);
 if (match) {
     new WebRequest(
         "http://www.youtube.com/get_video_info?video_id=" + match[1],
-        yt_info_callback,
-        "text"
+        yt_info_callback
     ).start();
 }
 
