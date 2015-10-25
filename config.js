@@ -264,19 +264,6 @@ function duckduckgo_jump_to_startpage(I) {
 
 define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
 
-function my_request(url, callback, responseType) {
-    const req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-        .createInstance(Ci.nsIXMLHttpRequest);
-    req.open("GET", url, true);
-    req.responseType = responseType || "document";
-    req.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            callback(this.response);
-        }
-    };
-    req.send(null);
-}
-
 function scan_for(str, regex) {
     let lastIndex = regex.lastIndex = 0;
     let match;
@@ -338,3 +325,5 @@ function nuke_fixed_elements(I) {
 }
 
 define_key(default_global_keymap, "M-k", nuke_fixed_elements);
+
+define_key(default_global_keymap, "C-c p", get_saved_password);
