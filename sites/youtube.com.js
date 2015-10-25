@@ -52,7 +52,7 @@ function yt_info_callback(str) {
     );
     const vids = vars_of(flashvars.url_encoded_fmt_stream_map)
           .reduce(function (acc, [key, value]) {
-              if (Object.prototype.hasOwnProperty.call(acc, key)) {
+              if (hasOwn(acc, key)) {
                   acc[key].push(value);
               } else {
                   acc[key] = [ value ];
