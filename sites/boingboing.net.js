@@ -4,7 +4,7 @@
 //  reader, and I don't want to have to scroll down just to find the
 //  comments button.
 
-$("div#comments").prependTo("div.post[id^='post-']");
+$("#headline").after($(".share"));
 
 //  Delete header.
 
