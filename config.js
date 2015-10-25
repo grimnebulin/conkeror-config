@@ -230,7 +230,7 @@ function next_page(I) {
 define_key(default_global_keymap, "C-.", next_page);
 
 on_dom_loaded(
-    /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|aproductmsg\.com|productmsg\.com/,
+    /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|aproductmsg\.com|productmsg\.com|timelypayments\.com/,
     kill_buffer,
     true
 );
