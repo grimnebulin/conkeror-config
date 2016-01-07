@@ -1,3 +1,5 @@
+"use strict";
+
 //  Move the Go-To-Comments button to the top of the page.
 //
 //  Most likely, I've already read the article's content in my feed

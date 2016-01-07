@@ -1,3 +1,5 @@
+"use strict";
+
 //
 //  This code inserts hyperlinks on a YouTube video page to all of the
 //  raw video files available on that page.

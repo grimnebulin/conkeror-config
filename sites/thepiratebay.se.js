@@ -1,3 +1,5 @@
+"use strict";
+
 // Eliminate all of the annoying ads:
 
 const main = $("div#main-content");

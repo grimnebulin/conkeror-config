@@ -1,3 +1,5 @@
+"use strict";
+
 //  This code watches for Wikipedia pages with titles of the form
 //  "List of <whatever> episodes".  For such pages, a hyperlink
 //  consisting of an asterisk is added to the episode-number column of

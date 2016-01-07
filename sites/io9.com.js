@@ -1,3 +1,5 @@
+"use strict";
+
 //  Automatically click and close intrusive ads.
 
 //  js_foreplay-close?  Really, io9?

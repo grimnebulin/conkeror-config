@@ -1,3 +1,5 @@
+"use strict";
+
 //  Eliminate cruft.
 
 if (buffer.current_uri.path.length > 2) {

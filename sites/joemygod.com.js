@@ -1,3 +1,5 @@
+"use strict";
+
 autoload_disqus_comments();
 
 $.onDocumentMutation(function () {

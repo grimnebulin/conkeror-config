@@ -1,3 +1,5 @@
+"use strict";
+
 //  Remove pop-up video:
 
 $.whenFound("#video-creative", remove_it);

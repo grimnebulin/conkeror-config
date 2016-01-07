@@ -1,3 +1,5 @@
+"use strict";
+
 // Perpetually remove ads in the right column:
 
 $("#rightCol").onSubtreeMutation(function () {
