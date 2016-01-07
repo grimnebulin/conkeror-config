@@ -1,3 +1,5 @@
+"use strict";
+
 //
 //  This file tweaks Conkeror's built-in functionality in various ways.
 //
