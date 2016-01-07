@@ -1,3 +1,5 @@
+"use strict";
+
 editor_shell_command = "emacsclient -c";
 
 download_buffer_automatic_open_target = OPEN_NEW_BUFFER;
@@ -76,14 +78,14 @@ define_webjump("bb", "http://bitbucket.org/");
 {
     let WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
 
-    function japanese_search(dict, term, extra) {
+    const japanese_search = function (dict, term, extra) {
         const uri = WWWJDIC_URL + dict;
         const post_data = [ pair for (pair in Iterator(extra || { })) ];
         return function (arg) {
             const data = make_post_data([[ term, arg ]].concat(post_data));
             return load_spec({ uri: uri, post_data: data });
         };
-    }
+    };
 
     define_webjump("je",    japanese_search("1E", "dsrchterm"));
     define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
@@ -131,10 +133,10 @@ define_webjump(
 {
     let FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
 
-    function firebug(I) {
+    const firebug = function (I) {
         $$(I).script({ src: FIREBUG_URL, onload: "firebug.init()" })
             .appendTo("body");
-    }
+    };
 
     interactive("fb", "open firebug lite", firebug);
 }
