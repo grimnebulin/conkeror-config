@@ -50,7 +50,6 @@ define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
 
 {
-
     let IMDB_URL = "http://imdb.com/";
 
     define_webjump(
@@ -58,7 +57,6 @@ define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&ob
         arg => IMDB_URL + "find?q=" + encodeURIComponent(arg).replace(/%20/g, "+"),
         $alternative = IMDB_URL
     );
-
 }
 
 {
@@ -168,6 +166,14 @@ interactive(
             $prompt = "jquery: ", $history = "jquery-here"
         );
         I.minibuffer.message(let ($ = $$(I)) eval(code));
+    }
+);
+
+interactive(
+    "ff",
+    "Open page in Firefox",
+    function (I) {
+        shell_command_with_argument_blind("firefox {}", I.buffer.current_uri.spec)
     }
 );
 
