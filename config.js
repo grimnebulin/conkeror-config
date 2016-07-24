@@ -22,7 +22,7 @@ define_key(gmail_keymap, "}", null, $fallthrough);
 
 let SEARCH = "https://duckduckgo.com/?kk=-1&q=%s";
 
-opensearch_load_paths.unshift(make_file("~/conkrc/search-engines/"));
+opensearch_load_paths.unshift(make_file("~/conkeror/conkeror-config/search-engines/"));
 define_opensearch_webjump("g", "duckduckgo.xml");
 
 define_webjump("m",   "https://mail.google.com/");
@@ -334,5 +334,3 @@ function nuke_fixed_elements(I) {
 }
 
 define_key(default_global_keymap, "M-k", nuke_fixed_elements);
-
-define_key(default_global_keymap, "C-c p", get_saved_password);
