@@ -329,7 +329,7 @@ define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
 function nuke_fixed_elements(I) {
     const $ = $$(I);
     $("*").filter(function () {
-        return $.window.getComputedStyle(this).display === "fixed";
+        return $.window.getComputedStyle(this).position === "fixed";
     }).remove();
 }
 
