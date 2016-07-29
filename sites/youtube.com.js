@@ -1,11 +1,9 @@
 "use strict";
 
+$.whenFound("div.pyv-afc-ads-container", remove_it);
 //
 //  This code inserts hyperlinks on a YouTube video page to all of the
 //  raw video files available on that page.
-//
-//  I didn't know before writing this code that Conkeror's YouTube
-//  mode can basically already do this.  Oh well!
 //
 
 const match = buffer.current_uri.asciiSpec.match(/[?&]v=([-\w]+)/);
@@ -48,6 +46,16 @@ const parallel_iterate = function () {
 
 function yt_info_callback(str) {
     const flashvars = object_from(vars_of(str));
+    if ("errorcode" in flashvars) {
+        const div = $("<div/>").prependTo($("#watch-header").parent());
+        if ("reason" in flashvars) {
+            div.html(flashvars.reason.replace(/\+/g, " "));
+            div.find("*").remove();
+        } else {
+            div.text("Error code present, but no reason given.  WTF?");
+        }
+        return;
+    }
     const format = object_from(
         x.split(/\//) for (x of flashvars.fmt_list.split(/,/))
     );
