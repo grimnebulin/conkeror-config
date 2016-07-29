@@ -13,3 +13,5 @@ $.whenFound("#adblade", remove_it);
 $.whenFound("iframe[id^='google_ads_iframe']", function () {
     this.closest("div.widget").remove();
 });
+
+$.whenFound("div > div.ac_adbox", div => div.parent().remove());
