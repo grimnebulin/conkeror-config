@@ -48,6 +48,7 @@ define_webjump("c",  "http://coursera.org/");
 define_webjump("fb", "https://www.facebook.com/?sk=h_chr");
 define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
+define_webjump("gh", "https://github.com/");
 
 {
     let IMDB_URL = "http://imdb.com/";
