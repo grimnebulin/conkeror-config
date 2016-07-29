@@ -335,3 +335,22 @@ function nuke_fixed_elements(I) {
 }
 
 define_key(default_global_keymap, "M-k", nuke_fixed_elements);
+
+//  This method returns a new jQuery object that refers to the
+//  document embedded in the first element of this jQuery object, if
+//  it is an <iframe> element.  Rather, it returns a Maybe object (see
+//  conkutil.js) that is a None if the invocant is empty or if its
+//  first element is not an iframe element, and a Some otherwise.
+//
+//  For example, changing the style of the first iframe object's
+//  <body> element to blue, if such an iframe element exists:
+//
+//  $("iframe").enterIFrame().foreach(
+//    $ => $("body").css("background", "blue")
+//  );
+
+$$.fn.enterIframe = function () {
+    return this.length > 0 && this[0].tagName == "IFRAME"
+        ? Some($$(this[0].contentWindow))
+        : None();
+};
