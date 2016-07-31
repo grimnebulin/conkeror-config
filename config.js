@@ -105,12 +105,6 @@ define_webjump("gh", "https://github.com/");
 
 }
 
-define_webjump(
-    "emacswiki",
-    "http://www.emacswiki.org/",
-    $alternative = "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F"
-);
-
 {
     let PIRATEBAY_URL = "http://thepiratebay.se/";
 
@@ -139,24 +133,6 @@ define_webjump(
     };
 
     interactive("fb", "open firebug lite", firebug);
-}
-
-{
-    let MODI_URL = "http://slayeroffice.com/tools/modi/v2.0/modi_v2.0.js";
-
-    let MODI_DOC =
-        "The Mouseover DOM Inspector, or MODI for short, is a favelet " +
-        "(also known as a bookmarklet) that allows you to view and manipulate " +
-        "the DOM of a web page simply by mousing around the document " +
-        "(http://slayeroffice.com/tools/modi/v2.0/modi_help.html).";
-
-    interactive(
-        "modi", MODI_DOC,
-        function (I) {
-            $$(I).script({ src: MODI_URL, id: "modi" }).appendTo("body");
-        }
-    );
-
 }
 
 interactive(
