@@ -238,11 +238,13 @@ function next_page(I) {
 
 define_key(default_global_keymap, "C-.", next_page);
 
-on_dom_loaded(
-    /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|aproductmsg\.com|productmsg\.com|timelypayments\.com|terraclicks\.com/,
-    kill_buffer,
-    true
-);
+const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|aproductmsg\.com|productmsg\.com|timelypayments\.com|terraclicks\.com/;
+
+add_dom_content_loaded_hook(function (buffer) {
+    if (BAD_HOSTS.test(buffer.current_uri.asciiHost)) {
+        kill_buffer(buffer);
+    }
+});
 
 define_key(default_global_keymap, "M-b", "bury-buffer");
 
