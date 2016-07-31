@@ -4,34 +4,6 @@
 //  This file tweaks Conkeror's built-in functionality in various ways.
 //
 
-//  This function follows a link in a new buffer, but then immediately
-//  unburies the original buffer.  This causes the new buffer to
-//  occupy a position just below the top in the buffer order.
-
-function follow_new_buffer_shallowly_buried(I) {
-    const buffer = I.buffer;
-    yield follow(I, OPEN_NEW_BUFFER);
-    I.window.buffers.unbury_buffer(buffer);
-}
-
-//  Redefine the "follow" command so that no C-u's follows a link in
-//  the current buffer, one C-u follows a link in a new buffer, two
-//  C-u's follows a link in a new buffer but then immediately unburies
-//  the starting buffer, and three C-u's follows a link in a new
-//  window.
-
-interactive(
-    "follow",
-    null,
-    alternates(
-        follow,
-        follow_new_buffer,
-        follow_new_buffer_shallowly_buried,
-        follow_new_window
-    ),
-    $browser_object = browser_object_links
-);
-
 //  Redefines the "bookmark" command so that the user is not prompted
 //  for a frame to bookmark; only the top-level window can be
 //  bookmarked.
