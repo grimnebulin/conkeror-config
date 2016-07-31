@@ -5,6 +5,7 @@ editor_shell_command = "emacsclient -c";
 download_buffer_automatic_open_target = OPEN_NEW_BUFFER;
 
 url_completion_use_history = true;
+
 session_pref("layout.spellcheckDefault", 0);
 session_pref("dom.disable_open_during_load", false);
 session_pref("xpinstall.whitelist.required", false);
@@ -17,142 +18,170 @@ require("reddit");
 require("google-search-results");
 require("duckduckgo");
 
-define_key(gmail_keymap, "{", null, $fallthrough);
-define_key(gmail_keymap, "}", null, $fallthrough);
-
-let SEARCH = "https://duckduckgo.com/?kk=-1&q=%s";
+page_mode_deactivate(youtube_player_mode);
+page_mode_deactivate(youtube_mode);
 
 opensearch_load_paths.unshift(make_file("~/conkeror/conkeror-config/search-engines/"));
+
 define_opensearch_webjump("g", "duckduckgo.xml");
 
-define_webjump("m",   "https://mail.google.com/");
-define_webjump("r",   "https://www.inoreader.com/");
-define_webjump("w",   "http://en.wikipedia.org/w/index.php?search=%s");
+// Webjumps
+
+define_webjump("m", "https://mail.google.com/");
+define_webjump("r", "https://www.inoreader.com/");
+define_webjump("w", "http://en.wikipedia.org/w/index.php?search=%s");
 define_webjump("eps", "http://en.wikipedia.org/w/index.php?search=list of %s episodes");
-define_webjump("yt",  "http://youtube.com/results?search_query=%s");
+define_webjump("yt", "http://youtube.com/results?search_query=%s");
 define_webjump("tta", "http://boardgaming-online.com/index.php?cnt=2");
-define_webjump("ud",  "http://www.urbandictionary.com/define.php?term=%s");
-define_webjump("so",  "http://stackoverflow.com/");
+define_webjump("ud", "http://www.urbandictionary.com/define.php?term=%s");
+define_webjump("so", "http://stackoverflow.com/");
 define_webjump("eso", "http://emacs.stackexchange.com/");
 define_webjump("jso", "http://japanese.stackexchange.com/");
 define_webjump("sfso", "http://scifi.stackexchange.com/");
 define_webjump("fso", "http://french.stackexchange.com/");
-define_webjump("js",  SEARCH + " javascript site:mozilla.org");
-define_webjump("cr",  "http://crunchyroll.com/queue");
-define_webjump("avc", SEARCH + " site:avclub.com",
-               $alternative = "http://avclub.com/");
-define_webjump("avr", SEARCH + " review site:avclub.com");
 define_webjump("mt", "http://movietickets.com/");
-define_webjump("t",  "http://twitter.com/");
-define_webjump("c",  "http://coursera.org/");
+define_webjump("t", "http://twitter.com/");
+define_webjump("c", "http://coursera.org/");
 define_webjump("fb", "https://www.facebook.com/?sk=h_chr");
 define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
 define_webjump("gh", "https://github.com/");
 
-{
-    let IMDB_URL = "http://imdb.com/";
+const SEARCH = "https://duckduckgo.com/?kk=-1&q=%s";
 
-    define_webjump(
-        "imdb",
-        arg => IMDB_URL + "find?q=" + encodeURIComponent(arg).replace(/%20/g, "+"),
-        $alternative = IMDB_URL
-    );
-}
+define_webjump("js",  SEARCH + " javascript site:mozilla.org");
+define_webjump("cr",  "http://crunchyroll.com/queue");
+define_webjump("avc", SEARCH + " site:avclub.com", $alternative = "http://avclub.com/");
+define_webjump("avr", SEARCH + " review site:avclub.com");
 
-{
-    let MANDARIN_TOOLS_URL = "http://www.mandarintools.com/";
+const IMDB_URL = "http://imdb.com/";
 
-    let MANDARIN_TOOLS_SEARCH_URL =
-        MANDARIN_TOOLS_URL + "cgi-bin/wordlook.pl?word=%s&where=whole&audio=on&searchtype=";
-
-    let MANDARIN_TOOLS_FALLBACK_URL = MANDARIN_TOOLS_URL + "worddict.html";
-
-    define_webjump("cp", MANDARIN_TOOLS_SEARCH_URL + "pinyin",
-                   $alternative = MANDARIN_TOOLS_FALLBACK_URL);
-    define_webjump("ce", MANDARIN_TOOLS_SEARCH_URL + "english",
-                   $alternative = MANDARIN_TOOLS_FALLBACK_URL);
-
-}
-
-{
-    let WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
-
-    const japanese_search = function (dict, term, extra) {
-        const uri = WWWJDIC_URL + dict;
-        const post_data = [ pair for (pair in Iterator(extra || { })) ];
-        return function (arg) {
-            const data = make_post_data([[ term, arg ]].concat(post_data));
-            return load_spec({ uri: uri, post_data: data });
-        };
-    };
-
-    define_webjump("je",    japanese_search("1E", "dsrchterm"));
-    define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
-    define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
-}
-
-{
-    let NETFLIX_URL = "http://dvd.netflix.com/";
-    let NETFLIX_QUEUE_URL = NETFLIX_URL + "Queue";
-    let NETFLIX_INSTANT_QUEUE_URL = NETFLIX_QUEUE_URL + "?qtype=DD";
-
-    define_webjump(
-        "nf", NETFLIX_URL + "Search?v1=%s", $alternative = NETFLIX_QUEUE_URL
-    );
-
-    define_webjump("nfi", NETFLIX_INSTANT_QUEUE_URL);
-
-}
-
-{
-    let PIRATEBAY_URL = "http://thepiratebay.se/";
-
-    define_webjump(
-        "pb",
-        function (arg) {
-            const format = x => x.length < 2 ? format("0" + x) : x;
-            const matched = ([_, name, season, episode]) =>
-                  name + " s" + format(season) + "e" + format(episode);
-            return PIRATEBAY_URL + "s/?q=" +
-                maybe(arg.match(/^(.*?)\s+0*(\d+)\s+0*(\d+)\s*$/))
-                .map(matched)
-                .getOrElse(arg);
-        },
-        $alternative = PIRATEBAY_URL
-    );
-
-}
-
-{
-    let FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
-
-    const firebug = function (I) {
-        $$(I).script({ src: FIREBUG_URL, onload: "firebug.init()" })
-            .appendTo("body");
-    };
-
-    interactive("fb", "open firebug lite", firebug);
-}
-
-interactive(
-    "jq",
-    "Execute jquery",
-    function (I) {
-        const code = yield I.minibuffer.read(
-            $prompt = "jquery: ", $history = "jquery-here"
-        );
-        I.minibuffer.message(let ($ = $$(I)) eval(code));
-    }
+define_webjump(
+    "imdb",
+    arg => IMDB_URL + "find?q=" + encodeURIComponent(arg).replace(/%20/g, "+"),
+    $alternative = IMDB_URL
 );
 
+const MANDARIN_TOOLS_URL = "http://www.mandarintools.com/";
+
+const MANDARIN_TOOLS_SEARCH_URL = MANDARIN_TOOLS_URL + "cgi-bin/wordlook.pl?word=%s&where=whole&audio=on&searchtype=";
+
+const MANDARIN_TOOLS_FALLBACK_URL = MANDARIN_TOOLS_URL + "worddict.html";
+
+define_webjump("cp", MANDARIN_TOOLS_SEARCH_URL + "pinyin",
+               $alternative = MANDARIN_TOOLS_FALLBACK_URL);
+define_webjump("ce", MANDARIN_TOOLS_SEARCH_URL + "english",
+               $alternative = MANDARIN_TOOLS_FALLBACK_URL);
+
+const WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
+
+define_webjump("je",    japanese_search("1E", "dsrchterm"));
+define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
+define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
+
+const NETFLIX_URL = "http://dvd.netflix.com/";
+const NETFLIX_QUEUE_URL = NETFLIX_URL + "Queue";
+const NETFLIX_INSTANT_QUEUE_URL = NETFLIX_QUEUE_URL + "?qtype=DD";
+
+define_webjump("nf", NETFLIX_URL + "Search?v1=%s", $alternative = NETFLIX_QUEUE_URL);
+define_webjump("nfi", NETFLIX_INSTANT_QUEUE_URL);
+
+const PIRATEBAY_URL = "http://thepiratebay.se/";
+
+define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
+
+// Key mappings
+
+define_key(gmail_keymap, "{", null, $fallthrough);
+define_key(gmail_keymap, "}", null, $fallthrough);
+define_key(default_global_keymap, "C-.", next_page);
+define_key(default_global_keymap, "M-b", "bury-buffer");
+define_key(default_global_keymap, "C-end", I => kill_buffer(I.buffer));
+define_key(default_global_keymap, "C-context_menu", open_boardgaming_online);
+define_key(default_global_keymap, "C-/", "find-url-new-buffer");
+define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
+define_key(default_global_keymap, "M-k", nuke_fixed_elements);
+define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
+
+// Interactives
+
+interactive("htmlize", "htmlize links", htmlize_links);
+interactive("fb", "open firebug lite", firebug);
+interactive("skewer", "Connect to Emacs", skewer);
+interactive("jq", "Execute jquery", execute_jquery);
+interactive("ff", "Open page in Firefox", open_in_firefox);
+
+//  Redefine the "follow" command so that no C-u's follows a link in
+//  the current buffer, one C-u follows a link in a new buffer, two
+//  C-u's follows a link in a new buffer but then immediately unburies
+//  the starting buffer, and three C-u's follows a link in a new
+//  window.
+
 interactive(
-    "ff",
-    "Open page in Firefox",
-    function (I) {
-        shell_command_with_argument_blind("firefox {}", I.buffer.current_uri.spec)
-    }
+    "follow",
+    null,
+    alternates(
+        follow,
+        follow_new_buffer,
+        follow_new_buffer_shallowly_buried,
+        follow_new_window
+    ),
+    $browser_object = browser_object_links
 );
+
+// Kill pages served by annoying hosts immediately
+
+const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|a?productmsg\.com|timelypayments\.com|terraclicks\.com/;
+
+add_dom_content_loaded_hook(function (buffer) {
+    if (BAD_HOSTS.test(buffer.current_uri.asciiHost)) {
+        kill_buffer(buffer);
+    }
+});
+
+// Support functions
+
+function execute_jquery(I) {
+    const code = yield I.minibuffer.read(
+        $prompt = "jquery: ", $history = "jquery-here"
+    );
+    const $ = $$(I);
+    I.minibuffer.message(eval(code));
+}
+
+function open_in_firefox(I) {
+    shell_command_with_argument_blind("firefox {}", I.buffer.current_uri.spec)
+}
+
+function piratebay_find_episode(arg) {
+    const format = x => x.length < 2 ? format("0" + x) : x;
+    const matched = ([_, name, season, episode]) =>
+          name + " s" + format(season) + "e" + format(episode);
+    return PIRATEBAY_URL + "s/?q=" +
+        maybe(arg.match(/^(.*?)\s+0*(\d+)\s+0*(\d+)\s*$/))
+        .map(matched)
+        .getOrElse(arg);
+}
+
+function japanese_search(dict, term, extra) {
+    const uri = WWWJDIC_URL + dict;
+    const post_data = [ pair for (pair in Iterator(extra || { })) ];
+    return function (arg) {
+        const data = make_post_data([[ term, arg ]].concat(post_data));
+        return load_spec({ uri: uri, post_data: data });
+    };
+}
+
+
+const FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
+
+function firebug(I) {
+    $$(I).script({ src: FIREBUG_URL, onload: "firebug.init()" })
+        .appendTo("body");
+}
+
+// Apply a heuristic to attempt to locate a hyperlink on the current
+// page which is the "next" in sequence after this page.
 
 function next_page(I) {
 
@@ -212,31 +241,13 @@ function next_page(I) {
 
 }
 
-define_key(default_global_keymap, "C-.", next_page);
-
-const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|aproductmsg\.com|productmsg\.com|timelypayments\.com|terraclicks\.com/;
-
-add_dom_content_loaded_hook(function (buffer) {
-    if (BAD_HOSTS.test(buffer.current_uri.asciiHost)) {
-        kill_buffer(buffer);
-    }
-});
-
-define_key(default_global_keymap, "M-b", "bury-buffer");
-
-define_key(default_global_keymap, "C-end", function (I) {
-    kill_buffer(I.buffer);
-});
-
-define_key(default_global_keymap, "C-context_menu", function (I) {
+function open_boardgaming_online(I) {
     if (I.window.buffers.count > 1 &&
         /mail\.google\.com/.test(I.buffer.current_uri.asciiHost)) {
         I.window.buffers.bury_buffer(I.buffer);
     }
     browser_object_follow(I.buffer, OPEN_NEW_BUFFER, "http://boardgaming-online.com/index.php?cnt=2");
-});
-
-define_key(default_global_keymap, "C-/", "find-url-new-buffer");
+}
 
 function duckduckgo_jump_to_startpage(I) {
     const query = $$(I)("input[name='q']").val();
@@ -249,8 +260,6 @@ function duckduckgo_jump_to_startpage(I) {
         })
     );
 }
-
-define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
 
 function scan_for(str, regex) {
     let lastIndex = regex.lastIndex = 0;
@@ -269,8 +278,6 @@ function scan_for(str, regex) {
     }
 }
 
-
-interactive("htmlize", "htmlize links", htmlize_links);
 
 function htmlize_links(I) {
     const $ = $$(I);
@@ -297,22 +304,12 @@ function skewer(I) {
     $$(I).script({ src: "http://localhost:8080/skewer" }).appendTo("head");
 }
 
-interactive("skewer", "Connect to Emacs", skewer);
-
-
-page_mode_deactivate(youtube_player_mode);
-page_mode_deactivate(youtube_mode);
-
-define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
-
 function nuke_fixed_elements(I) {
     const $ = $$(I);
     $("*").filter(function () {
         return $.window.getComputedStyle(this).position === "fixed";
     }).remove();
 }
-
-define_key(default_global_keymap, "M-k", nuke_fixed_elements);
 
 //  This method returns a new jQuery object that refers to the
 //  document embedded in the first element of this jQuery object, if
@@ -342,21 +339,3 @@ function follow_new_buffer_shallowly_buried(I) {
     yield follow(I, OPEN_NEW_BUFFER);
     I.window.buffers.unbury_buffer(buffer);
 }
-
-//  Redefine the "follow" command so that no C-u's follows a link in
-//  the current buffer, one C-u follows a link in a new buffer, two
-//  C-u's follows a link in a new buffer but then immediately unburies
-//  the starting buffer, and three C-u's follows a link in a new
-//  window.
-
-interactive(
-    "follow",
-    null,
-    alternates(
-        follow,
-        follow_new_buffer,
-        follow_new_buffer_shallowly_buried,
-        follow_new_window
-    ),
-    $browser_object = browser_object_links
-);
