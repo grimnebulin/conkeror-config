@@ -5,5 +5,5 @@ comment.  Feel free to browse.
 
 # DEPENDENCIES
 
-- [conkeror-jquery](../conkeror-jquery)
-- [conkeror-util] (../conkeror-util)
+- [conkeror-jquery](https://github.com/grimnebulin/conkeror-jquery)
+- [conkeror-util] (https://github.com/grimnebulin/conkeror-util)
