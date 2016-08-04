@@ -307,7 +307,7 @@ function skewer(I) {
 
 function nuke_fixed_elements(I) {
     const $ = $$(I);
-    $("*").filter(function () {
+    $("*[id!='comments']").filter(function () {
         return $.window.getComputedStyle(this).position === "fixed";
     }).remove();
 }
