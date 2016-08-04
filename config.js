@@ -53,6 +53,7 @@ define_webjump("js",  SEARCH + " javascript site:mozilla.org");
 define_webjump("cr",  "http://crunchyroll.com/queue");
 define_webjump("avc", SEARCH + " site:avclub.com", $alternative = "http://avclub.com/");
 define_webjump("avr", SEARCH + " review site:avclub.com");
+define_webjump("kym", SEARCH + " site:knowyourmeme.com");
 
 const IMDB_URL = "http://imdb.com/";
 
