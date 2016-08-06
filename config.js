@@ -139,6 +139,14 @@ add_dom_content_loaded_hook(function (buffer) {
     }
 });
 
+//
+
+add_dom_content_loaded_hook(function (buffer) {
+    if (/\bthepiratebay\b/.test(buffer.current_uri.asciiHost)) {
+        piratebay_clean_up_page($$(buffer));
+    }
+})
+
 // Support functions
 
 function execute_jquery(I) {
@@ -161,6 +169,17 @@ function piratebay_find_episode(arg) {
         maybe(arg.match(/^(.*?)\s+0*(\d+)\s+0*(\d+)\s*$/))
         .map(matched)
         .getOrElse(arg);
+}
+
+function piratebay_clean_up_page($) {
+    const main = $("div#main-content");
+
+    main.prevAll().remove();
+    main.nextAll().remove();
+    main.parent().nextAll().remove();
+
+    $("div.ad").remove();
+    $("iframe").remove();
 }
 
 function japanese_search(dict, term, extra) {
