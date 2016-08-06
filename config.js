@@ -111,6 +111,7 @@ interactive("fb", "open firebug lite", firebug);
 interactive("skewer", "Connect to Emacs", skewer);
 interactive("jq", "Execute jquery", execute_jquery);
 interactive("ff", "Open page in Firefox", open_in_firefox);
+interactive("dm", "Open builtin download manager", "download-manager-show-builtin-ui");
 
 //  Redefine the "follow" command so that no C-u's follows a link in
 //  the current buffer, one C-u follows a link in a new buffer, two
