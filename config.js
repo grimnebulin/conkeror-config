@@ -335,12 +335,12 @@ function nuke_fixed_elements(I) {
 //  For example, changing the style of the first iframe object's
 //  <body> element to blue, if such an iframe element exists:
 //
-//  $("iframe").enterIFrame().foreach(
+//  $("iframe").enterIframe().foreach(
 //    $ => $("body").css("background", "blue")
 //  );
 
 $$.fn.enterIframe = function () {
-    return this.length > 0 && this[0].tagName == "IFRAME"
+    return this.length > 0 && this[0].tagName === "IFRAME"
         ? Some($$(this[0].contentWindow))
         : None();
 };
