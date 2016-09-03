@@ -132,7 +132,7 @@ interactive(
 
 // Kill pages served by annoying hosts immediately
 
-const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|a?productmsg\.com|timelypayments\.com|terraclicks\.com/;
+const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|a?productmsg\.com|timelypayments\.com|terraclicks\.com|offer\.alibaba\.com/;
 
 add_dom_content_loaded_hook(function (buffer) {
     if (BAD_HOSTS.test(buffer.current_uri.asciiHost)) {
