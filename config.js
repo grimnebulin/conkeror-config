@@ -318,9 +318,12 @@ function skewer(I) {
 
 function nuke_fixed_elements(I) {
     const $ = $$(I);
-    $("*[id!='comments']").filter(function () {
+    const removed = $("*[id!='comments']").filter(function () {
         return $.window.getComputedStyle(this).position === "fixed";
-    }).remove();
+    }).remove().length;
+    I.minibuffer.message(
+        removed + " element" + (removed != 1 ? "s" : "") + " removed"
+    );
 }
 
 //  This method returns a new jQuery object that refers to the
