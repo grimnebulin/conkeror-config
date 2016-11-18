@@ -110,7 +110,6 @@ define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
 interactive("htmlize", "htmlize links", htmlize_links);
 interactive("fb", "open firebug lite", firebug);
 interactive("skewer", "Connect to Emacs", skewer);
-interactive("jq", "Execute jquery", execute_jquery);
 interactive("ff", "Open page in Firefox", open_in_firefox);
 interactive("dm", "Open builtin download manager", "download-manager-show-builtin-ui");
 
@@ -134,7 +133,7 @@ interactive(
 
 // Kill pages served by annoying hosts immediately
 
-const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|a?productmsg\.com|timelypayments\.com|terraclicks\.com/;
+const BAD_HOSTS = /cdn\.optmd\.com|axp\.zedo\.com|media\.fastclick\.net|adrotator\.se|voicefive\.com|tribalfusion\.com|a?productmsg\.com|timelypayments\.com|terraclicks\.com|offer\.alibaba\.com/;
 
 add_dom_content_loaded_hook(function (buffer) {
     if (BAD_HOSTS.test(buffer.current_uri.asciiHost)) {
@@ -151,14 +150,6 @@ add_dom_content_loaded_hook(function (buffer) {
 })
 
 // Support functions
-
-function execute_jquery(I) {
-    const code = yield I.minibuffer.read(
-        $prompt = "jquery: ", $history = "jquery-here"
-    );
-    const $ = $$(I);
-    I.minibuffer.message(eval(code));
-}
 
 function open_in_firefox(I) {
     shell_command_with_argument_blind("firefox {}", I.buffer.current_uri.spec)
@@ -328,9 +319,12 @@ function skewer(I) {
 
 function nuke_fixed_elements(I) {
     const $ = $$(I);
-    $("*[id!='comments']").filter(function () {
+    const removed = $("*[id!='comments']").filter(function () {
         return $.window.getComputedStyle(this).position === "fixed";
-    }).remove();
+    }).remove().length;
+    I.minibuffer.message(
+        removed + " element" + (removed != 1 ? "s" : "") + " removed"
+    );
 }
 
 //  This method returns a new jQuery object that refers to the
@@ -342,12 +336,12 @@ function nuke_fixed_elements(I) {
 //  For example, changing the style of the first iframe object's
 //  <body> element to blue, if such an iframe element exists:
 //
-//  $("iframe").enterIFrame().foreach(
+//  $("iframe").enterIframe().foreach(
 //    $ => $("body").css("background", "blue")
 //  );
 
 $$.fn.enterIframe = function () {
-    return this.length > 0 && this[0].tagName == "IFRAME"
+    return this.length > 0 && this[0].tagName === "IFRAME"
         ? Some($$(this[0].contentWindow))
         : None();
 };
@@ -361,3 +355,25 @@ function follow_new_buffer_shallowly_buried(I) {
     yield follow(I, OPEN_NEW_BUFFER);
     I.window.buffers.unbury_buffer(buffer);
 }
+
+function eval_expression_or_jquery(I) {
+    const s = yield I.minibuffer.read(
+        $prompt = "Eval:",
+        $history = "eval-expression-or-jquery",
+        $completer = new javascript_completer(conkeror));
+    if (s.startsWith("$")) {
+        const $ = $$(I);
+        var result = eval(s);
+    } else {
+        var result = evaluate(s);
+    }
+    I.window.minibuffer.message(String(result));
+}
+
+interactive(
+    "eval-expression-or-jquery",
+    "Evaluate Javascript or Jquery statements",
+    eval_expression_or_jquery
+);
+
+define_key(default_global_keymap, "M-:", "eval-expression-or-jquery");
