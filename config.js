@@ -96,6 +96,7 @@ define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
 
 define_key(gmail_keymap, "{", null, $fallthrough);
 define_key(gmail_keymap, "}", null, $fallthrough);
+define_key(gmail_keymap, "M-f", "follow");
 define_key(default_global_keymap, "C-.", next_page);
 define_key(default_global_keymap, "M-b", "bury-buffer");
 define_key(default_global_keymap, "C-end", I => kill_buffer(I.buffer));
