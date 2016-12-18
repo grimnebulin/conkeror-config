@@ -47,6 +47,7 @@ define_webjump("fb", "https://www.facebook.com/?sk=h_chr");
 define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
 define_webjump("gh", "https://github.com/");
+define_webjump("sd", "http://www.scala-lang.org/api/current/index.html#package");
 
 define_webjump(
     "cx",
@@ -102,6 +103,7 @@ define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
 
 define_key(gmail_keymap, "{", null, $fallthrough);
 define_key(gmail_keymap, "}", null, $fallthrough);
+define_key(gmail_keymap, "M-f", "follow");
 define_key(default_global_keymap, "C-.", next_page);
 define_key(default_global_keymap, "M-b", "bury-buffer");
 define_key(default_global_keymap, "C-end", I => kill_buffer(I.buffer));
