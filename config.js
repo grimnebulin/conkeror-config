@@ -39,6 +39,7 @@ define_webjump("eso", "http://emacs.stackexchange.com/");
 define_webjump("jso", "http://japanese.stackexchange.com/");
 define_webjump("sfso", "http://scifi.stackexchange.com/");
 define_webjump("fso", "http://french.stackexchange.com/");
+define_webjump("pgso", "http://codegolf.stackexchange.com/");
 define_webjump("mt", "http://movietickets.com/");
 define_webjump("t", "http://twitter.com/");
 define_webjump("c", "http://coursera.org/");
@@ -46,6 +47,12 @@ define_webjump("fb", "https://www.facebook.com/?sk=h_chr");
 define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
 define_webjump("gh", "https://github.com/");
+
+define_webjump(
+    "cx",
+    "https://pulllist.comixology.com/search/?search_query=%s",
+    $alternative = "https://pulllist.comixology.com/subscriptions/"
+);
 
 const SEARCH = "https://duckduckgo.com/?kk=-1&q=%s";
 
