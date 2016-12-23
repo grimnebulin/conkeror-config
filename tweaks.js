@@ -93,12 +93,16 @@ function suggest_save_path(spec, buffer) {
             } catch (e) { dumpln(e) }
         }
     }
-    const dir = dest.dir === undefined
-        ? get_home_directory().path
-        : dest.dir.startsWith("/")
-        ? dest.dir
-        : let (p = get_home_directory())
-              (p.appendRelativePath(dest.dir), p.path);
+    let dir;
+    if (dest.dir === undefined) {
+        dir = get_home_directory().path;
+    } else if (dest.dir.startsWith("/")) {
+        dir = dest.dir;
+    } else {
+        const p = get_home_directory();
+        p.appendRelativePath(dest.dir);
+        dir = p.path;
+    }
     return dir.replace(/\/*$/, "/")
         + dest.filename.replace(/\//g, "-")
         + dest.extension.replace(/^\.?([^.])/, ".$1");
