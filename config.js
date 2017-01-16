@@ -40,6 +40,7 @@ define_webjump("jso", "http://japanese.stackexchange.com/");
 define_webjump("sfso", "http://scifi.stackexchange.com/");
 define_webjump("fso", "http://french.stackexchange.com/");
 define_webjump("pgso", "http://codegolf.stackexchange.com/");
+define_webjump("mso", "http://math.stackexchange.com/");
 define_webjump("mt", "http://movietickets.com/");
 define_webjump("t", "http://twitter.com/");
 define_webjump("c", "http://coursera.org/");
