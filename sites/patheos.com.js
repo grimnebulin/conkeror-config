@@ -15,3 +15,7 @@ $.whenFound("iframe[id^='google_ads_iframe']", function () {
 });
 
 $.whenFound("div > div.ac_adbox", div => div.parent().remove());
+
+$.onDocumentMutation(function () {
+    $("div.tynt-close-btn").click();
+});

@@ -17,6 +17,9 @@ require("gmail");
 require("reddit");
 require("google-search-results");
 require("duckduckgo");
+require("key-kill");
+
+key_kill_mode.test.push(/facebook\.com\//);
 
 page_mode_deactivate(youtube_player_mode);
 page_mode_deactivate(youtube_mode);
@@ -85,9 +88,9 @@ define_webjump("ce", MANDARIN_TOOLS_SEARCH_URL + "english",
 
 const WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
 
-define_webjump("je",    japanese_search("1E", "dsrchterm"));
-define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
-define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
+// define_webjump("je",    japanese_search("1E", "dsrchterm"));
+// define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
+// define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
 
 const NETFLIX_URL = "http://dvd.netflix.com/";
 const NETFLIX_QUEUE_URL = NETFLIX_URL + "Queue";
@@ -185,14 +188,15 @@ function piratebay_clean_up_page($) {
     $("iframe").remove();
 }
 
-function japanese_search(dict, term, extra) {
-    const uri = WWWJDIC_URL + dict;
-    const post_data = [ pair for (pair in Iterator(extra || { })) ];
-    return function (arg) {
-        const data = make_post_data([[ term, arg ]].concat(post_data));
-        return load_spec({ uri: uri, post_data: data });
-    };
-}
+// Array comprehension bad!
+// function japanese_search(dict, term, extra) {
+//     const uri = WWWJDIC_URL + dict;
+//     const post_data = [ pair for (pair in Iterator(extra || { })) ];
+//     return function (arg) {
+//         const data = make_post_data([[ term, arg ]].concat(post_data));
+//         return load_spec({ uri: uri, post_data: data });
+//     };
+// }
 
 
 const FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
@@ -312,9 +316,9 @@ function htmlize_links(I) {
     }
 
     $.xpath(xpath).replaceWith(function () {
-        return [
-            replacement(match) for (match of scan_for(this.nodeValue, regex))
-        ];
+        return Array.from(
+            scan_for(this.nodeValue, regex), replacement
+        );
     });
 }
 

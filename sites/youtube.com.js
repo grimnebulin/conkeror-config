@@ -16,17 +16,26 @@ if (match) {
 }
 
 const vars_of = function (str) {
-    return [
-        param.split(/=/).map(decodeURIComponent)
-        for (param of str.split(/[&,]/))  // Comma is a separator too?!
-    ];                                    // Well-played, Google.
+    return str.split(/[&,]/).map(p => p.split(/=/).map(decodeURIComponent));
+    // return Array.from(
+    //     param.split(/=/).map(decodeURIComponent)
+    //     for (param of str.split(/[&,]/))  // Comma is a separator too?!
+    // );                                    // Well-played, Google.
 };
 
 const object_from = function (src) {
     const obj = { };
-    for (let [key, value] of src) {
-        obj[key] = value;
+    while (true) {
+        const x = src.next();
+        if (x.done) {
+            break;
+        } else {
+            obj[x.value[0]] = x.value[1];
+        }
     }
+    // for (let [key, value] of src) {
+    //     obj[key] = value;
+    // }
     return obj;
 };
 
@@ -57,7 +66,8 @@ function yt_info_callback(str) {
         return;
     }
     const format = object_from(
-        x.split(/\//) for (x of flashvars.fmt_list.split(/,/))
+        flashvars.fmt_list.split(/,/).map(x => x.split(/\//))
+        // x.split(/\//) for (x of flashvars.fmt_list.split(/,/))
     );
     const vids = vars_of(flashvars.url_encoded_fmt_stream_map)
           .reduce(function (acc, [key, value]) {
@@ -68,14 +78,16 @@ function yt_info_callback(str) {
               }
               return acc;
           }, { });
-    $("<ul/>").prependTo($("#watch-header").parent()).append([
-        $("<li/>").append(
-            $("<a/>").attr("href", url).text(
-                type.replace(/;.*/, "") + " (" +
-                format[itag] + ") (" + quality + ")"
-            )
-        )[0]
-        for ([url, itag, quality, type] of
-            parallel_iterate(vids.url, vids.itag, vids.quality, vids.type))
-    ]);
+    $("<ul/>").prependTo($("#watch-header").parent()).append(
+        Array.from(
+            parallel_iterate(vids.url, vids.itag, vids.quality, vids.type),
+            ([url, itag, quality, type]) =>
+                $("<li/>").append(
+                    $("<a/>").attr("href", url).text(
+                        type.replace(/;.*/, "") + " (" +
+                            format[itag] + ") (" + quality + ")"
+                    )
+                )[0]
+        )
+    );
 }
