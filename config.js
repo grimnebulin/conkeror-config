@@ -105,16 +105,19 @@ define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
 
 // Key mappings
 
+function kill_this_buffer(I) { kill_buffer(I.buffer) }
+
 define_key(gmail_keymap, "{", null, $fallthrough);
 define_key(gmail_keymap, "}", null, $fallthrough);
 define_key(gmail_keymap, "M-f", "follow");
 define_key(default_global_keymap, "C-.", next_page);
 define_key(default_global_keymap, "M-b", "bury-buffer");
-define_key(default_global_keymap, "C-end", I => kill_buffer(I.buffer));
+define_key(default_global_keymap, "C-end", kill_this_buffer);
+define_key(default_global_keymap, "M-k", kill_this_buffer);
 define_key(default_global_keymap, "C-context_menu", open_boardgaming_online);
 define_key(default_global_keymap, "C-/", "find-url-new-buffer");
 define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
-define_key(default_global_keymap, "M-k", nuke_fixed_elements);
+define_key(default_global_keymap, "C-M-k", nuke_fixed_elements);
 define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
 
 // Interactives
