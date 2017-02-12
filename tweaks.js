@@ -107,3 +107,17 @@ function suggest_save_path(spec, buffer) {
         + dest.filename.replace(/\//g, "-")
         + dest.extension.replace(/^\.?([^.])/, ".$1");
 }
+
+// See: http://bugs.conkeror.org/issue491
+
+duckduckgo_call_command = function (buffer, command) {
+    var s = Cu.Sandbox(buffer.top_frame);
+    var window = buffer.top_frame.wrappedJSObject;
+    for(var prop in window) {
+        if (prop.indexOf("nk") == 0) {
+            s[prop] = window[prop];
+        }
+    }
+    s.document = buffer.document.wrappedJSObject;
+    Components.utils.evalInSandbox(command+"()", s);
+};
