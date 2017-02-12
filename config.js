@@ -20,6 +20,9 @@ require("duckduckgo");
 require("key-kill");
 
 key_kill_mode.test.push(/facebook\.com\//);
+key_kill_mode.test.push(/bbs\.boingboing\.com\//);
+
+interactive("kk", "Toggle key-kill-mode", "key-kill-mode");
 
 page_mode_deactivate(youtube_player_mode);
 page_mode_deactivate(youtube_mode);
