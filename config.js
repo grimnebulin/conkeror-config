@@ -33,7 +33,7 @@ define_opensearch_webjump("g", "duckduckgo.xml");
 
 // Webjumps
 
-define_webjump("m", "https://mail.google.com/");
+define_webjump("m", "https://mail.google.com/mail/u/?authuser=eefacm@gmail.com");
 define_webjump("r", "https://www.inoreader.com/");
 define_webjump("w", "http://en.wikipedia.org/w/index.php?search=%s");
 define_webjump("eps", "http://en.wikipedia.org/w/index.php?search=list of %s episodes");
