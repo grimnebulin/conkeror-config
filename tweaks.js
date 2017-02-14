@@ -110,6 +110,8 @@ function suggest_save_path(spec, buffer) {
 
 // See: http://bugs.conkeror.org/issue491
 
+require("duckduckgo");
+
 conkeror.duckduckgo_call_command = function (buffer, command) {
     var s = Cu.Sandbox(buffer.top_frame);
     var window = buffer.top_frame.wrappedJSObject;
