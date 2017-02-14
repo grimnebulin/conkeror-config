@@ -117,6 +117,7 @@ define_key(default_global_keymap, "C-.", next_page);
 define_key(default_global_keymap, "M-b", "bury-buffer");
 define_key(default_global_keymap, "C-end", kill_this_buffer);
 define_key(default_global_keymap, "M-k", kill_this_buffer);
+define_key(default_global_keymap, "C-x 0", kill_this_buffer);
 define_key(default_global_keymap, "C-context_menu", open_boardgaming_online);
 define_key(default_global_keymap, "C-/", "find-url-new-buffer");
 define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
