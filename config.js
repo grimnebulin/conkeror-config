@@ -55,6 +55,7 @@ define_webjump("bb", "http://bitbucket.org/");
 define_webjump("bgg", "https://boardgamegeek.com/geeksearch.php?action=search&objecttype=boardgame&q=%s&B1=Go");
 define_webjump("gh", "https://github.com/");
 define_webjump("sd", "http://www.scala-lang.org/api/current/index.html#package");
+define_webjump("ebay", "https://www.ebay.com/sch/i.html?_nkw=%s");
 
 define_webjump(
     "cx",
@@ -65,17 +66,21 @@ define_webjump(
 const SEARCH = "https://duckduckgo.com/?kk=-1&q=%s";
 
 define_webjump("js",  SEARCH + " javascript site:mozilla.org");
-define_webjump("cr",  "http://crunchyroll.com/queue");
 define_webjump("avc", SEARCH + " site:avclub.com", $alternative = "http://avclub.com/");
 define_webjump("avr", SEARCH + " review site:avclub.com");
 define_webjump("kym", SEARCH + " site:knowyourmeme.com");
+define_webjump("sf",  SEARCH + " san francisco");
 
-const IMDB_URL = "http://imdb.com/";
+define_webjump(
+    "cr",
+    "http://www.crunchyroll.com/search?q=%s",
+    $alternative = "http://crunchyroll.com/queue"
+);
 
 define_webjump(
     "imdb",
-    arg => IMDB_URL + "find?q=" + encodeURIComponent(arg).replace(/%20/g, "+"),
-    $alternative = IMDB_URL
+    arg => "http://imdb.com/find?q=" + encodeURIComponent(arg).replace(/%20/g, "+"),
+    $alternative = "http://imdb.com/"
 );
 
 const MANDARIN_TOOLS_URL = "http://www.mandarintools.com/";
@@ -95,12 +100,13 @@ const WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
 // define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
 // define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
 
-const NETFLIX_URL = "http://dvd.netflix.com/";
-const NETFLIX_QUEUE_URL = NETFLIX_URL + "Queue";
-const NETFLIX_INSTANT_QUEUE_URL = NETFLIX_QUEUE_URL + "?qtype=DD";
+define_webjump(
+    "nf",
+    "https://www.netflix.com/search?q=%s",
+    $alternative = "https://dvd.netflix.com/Queue?qtype=DD"
+);
 
-define_webjump("nf", NETFLIX_URL + "Search?v1=%s", $alternative = NETFLIX_QUEUE_URL);
-define_webjump("nfi", NETFLIX_INSTANT_QUEUE_URL);
+define_webjump("nfi", "https://www.netflix.com/browse/my-list");
 
 const PIRATEBAY_URL = "http://thepiratebay.se/";
 
