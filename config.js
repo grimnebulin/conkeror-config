@@ -403,3 +403,51 @@ interactive(
 );
 
 define_key(default_global_keymap, "M-:", "eval-expression-or-jquery");
+
+///
+
+function read_comments(regex) {
+    return function (div, $, I) {
+        const comments = div.find("a").filter(function () {
+            return regex.test($(this).text());
+        });
+        if (comments.last().clickthis().length == 0) {
+            I.minibuffer.message("No comment link found");
+        }
+    };
+}
+
+inoreader_alternate_view(
+    "Cory Doctorow",
+    read_comments(/^\d+ comments/i)
+);
+
+inoreader_alternate_view(
+    "Savage Slog",
+    read_comments(/comment on this story/i)
+);
+
+function daily_wtf_alternate_view(div, $, I) {
+    const a = div.find("div.article_title a");
+    if (a.length === 0) {
+        I.minibuffer.message("Article title not found");
+        return;
+    }
+    new WebRequest(
+        a.attr("href"),
+        function (document) {
+            const comments = document.querySelector("a.comments");
+            if (comments) {
+                browser_object_follow(I.buffer, OPEN_NEW_BUFFER, comments.getAttribute("href"));
+            } else {
+                I.minibuffer.message("No comment link found on article page");
+            }
+        },
+        "document"
+    ).start();
+}
+
+inoreader_alternate_view(
+    "The Daily WTF",
+    daily_wtf_alternate_view
+);
