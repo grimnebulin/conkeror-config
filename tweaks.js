@@ -123,3 +123,34 @@ conkeror.duckduckgo_call_command = function (buffer, command) {
     s.document = buffer.document.wrappedJSObject;
     Components.utils.evalInSandbox(command+"()", s);
 };
+
+require("reddit");
+
+define_browser_object_class(
+    "reddit-links",
+    null,
+    xpath_browser_object_handler("//a"),
+    $hint = "select link"
+);
+
+define_page_mode("reddit-mode",
+    build_url_regexp($domain = /([a-zA-Z0-9\-]*\.)*reddit/),
+    function enable (buffer) {
+        for each (var c in reddit_link_commands) {
+            buffer.default_browser_object_classes[c] =
+                browser_object_reddit_current;
+        }
+        buffer.default_browser_object_classes.follow = browser_object_reddit_links;
+        buffer.content_modalities.push(reddit_modality);
+    },
+    function disable (buffer) {
+        for each (var c in reddit_link_commands) {
+            delete buffer.default_browser_object_classes[c];
+        }
+        delete buffer.default_browser_object_classes.follow;
+        var i = buffer.content_modalities.indexOf(reddit_modality);
+        if (i > -1)
+            buffer.content_modalities.splice(i, 1);
+    },
+    $display_name = "reddit",
+    $doc = "reddit page-mode: keyboard navigation for reddit.");
