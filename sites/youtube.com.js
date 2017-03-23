@@ -20,12 +20,12 @@ const vars_of = function (str) {
     return str.split(/[&,]/).map(p => p.split(/=/).map(decodeURIComponent));
 };
 
-const object_from = function (src) {
-    const obj = { };
+const map_from = function (src) {
+    const map = new Map;
     for (let [key, value] of src) {
-        obj[key] = value;
+        map.set(key, value);
     }
-    return obj;
+    return map;
 };
 
 const parallel_iterate = function () {
@@ -43,37 +43,37 @@ const parallel_iterate = function () {
 };
 
 function yt_info_callback(str) {
-    const flashvars = object_from(vars_of(str));
-    if ("errorcode" in flashvars) {
+    const flashvars = map_from(vars_of(str));
+    if (flashvars.has("errorcode")) {
         const div = $("<div/>").prependTo($("#watch-header").parent());
-        if ("reason" in flashvars) {
-            div.html(flashvars.reason.replace(/\+/g, " "));
+        if (flashvars.has("reason")) {
+            div.html(flashvars.get("reason").replace(/\+/g, " "));
             div.find("*").remove();
         } else {
             div.text("Error code present, but no reason given.  WTF?");
         }
         return;
     }
-    const format = object_from(
-        flashvars.fmt_list.split(/,/).map(x => x.split(/\//))
+    const format = map_from(
+        flashvars.get("fmt_list").split(/,/).map(x => x.split(/\//))
     );
-    const vids = vars_of(flashvars.url_encoded_fmt_stream_map)
+    const vids = vars_of(flashvars.get("url_encoded_fmt_stream_map"))
           .reduce(function (acc, [key, value]) {
-              if (hasOwn(acc, key)) {
-                  acc[key].push(value);
+              if (acc.has(key)) {
+                  acc.get(key).push(value);
               } else {
-                  acc[key] = [ value ];
+                  acc.set(key, [ value ]);
               }
               return acc;
-          }, { });
+          }, new Map);
     $("<ul/>").prependTo($("#watch-header").parent()).append(
         Array.from(
-            parallel_iterate(vids.url, vids.itag, vids.quality, vids.type),
+            parallel_iterate(vids.get("url"), vids.get("itag"), vids.get("quality"), vids.get("type")),
             ([url, itag, quality, type]) =>
                 $("<li/>").append(
                     $("<a/>").attr("href", url).text(
                         type.replace(/;.*/, "") + " (" +
-                            format[itag] + ") (" + quality + ")"
+                            format.get("itag") + ") (" + quality + ")"
                     )
                 )[0]
         )

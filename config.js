@@ -225,7 +225,7 @@ function firebug(I) {
 function next_page(I) {
 
     function numeric_params(str) {
-        const param = { };
+        const param = new Map;
         const qm = str.indexOf("?");
         if (qm >= 0) {
             for (let pair of str.substring(qm + 1).split(/&/)) {
@@ -237,7 +237,7 @@ function next_page(I) {
                     continue;
                 }
                 if (/^\d+$/.test(value)) {
-                    param[key] = parseInt(value, 10);
+                    param.set(key, parseInt(value, 10));
                 }
             }
         }
@@ -251,9 +251,9 @@ function next_page(I) {
     const links = $("a").filter(function () {
         const param = numeric_params(this.href);
         for (let key in param) {
-            if (hasOwn(url, key)) {
-                return param[key] == url[key] + 1;
-            } else if (param[key] == 2) {
+            if (url.has(key)) {
+                return param.get(key) === url.get(key) + 1;
+            } else if (param.get(key) === 2) {
                 return true;
             }
         }
@@ -267,7 +267,7 @@ function next_page(I) {
         return acc;
     }, [ ]);
 
-    if (links.length == 0) {
+    if (links.length === 0) {
         I.minibuffer.message("Found no Next links");
     } else if (links.length > 1) {
         I.minibuffer.message(
@@ -411,7 +411,7 @@ function read_comments(regex) {
         const comments = div.find("a").filter(function () {
             return regex.test($(this).text());
         });
-        if (comments.last().clickthis().length == 0) {
+        if (comments.last().clickthis().length === 0) {
             I.minibuffer.message("No comment link found");
         }
     };
