@@ -154,3 +154,21 @@ define_page_mode("reddit-mode",
     },
     $display_name = "reddit",
     $doc = "reddit page-mode: keyboard navigation for reddit.");
+
+
+// Conkeror's Map stub does not accept a constructor argument
+// specifying initial content for the Map.  This wrapper provides that
+// functionality.
+
+conkeror.Map = (function (OriginalMap) {
+    function MapWithInitialContent() {
+        OriginalMap.call(this);
+        if (arguments.length > 0) {
+            for (let [key, value] of arguments[0]) {
+                this.set(key, value);
+            }
+        }
+    }
+    MapWithInitialContent.prototype = OriginalMap.prototype;
+    return MapWithInitialContent;
+})(Map);

@@ -20,17 +20,8 @@ const vars_of = function (str) {
     return str.split(/[&,]/).map(p => p.split(/=/).map(decodeURIComponent));
 };
 
-const map_from = function (src) {
-    const map = new Map;
-    for (let [key, value] of src) {
-        map.set(key, value);
-    }
-    return map;
-};
-
-const parallel_iterate = function () {
-    if (arguments.length > 0) {
-        const arrays = Array.slice(arguments);
+const parallel_iterate = function (...arrays) {
+    if (arrays.length > 0) {
         for (let i = 0; ; ++i) {
             const [done, elems] = arrays.reduce(
                 ([done, elems], array) =>
@@ -43,7 +34,7 @@ const parallel_iterate = function () {
 };
 
 function yt_info_callback(str) {
-    const flashvars = map_from(vars_of(str));
+    const flashvars = new Map(vars_of(str));
     if (flashvars.has("errorcode")) {
         const div = $("<div/>").prependTo($("#watch-header").parent());
         if (flashvars.has("reason")) {
@@ -54,18 +45,11 @@ function yt_info_callback(str) {
         }
         return;
     }
-    const format = map_from(
+    const format = new Map(
         flashvars.get("fmt_list").split(/,/).map(x => x.split(/\//))
     );
     const vids = vars_of(flashvars.get("url_encoded_fmt_stream_map"))
-          .reduce(function (acc, [key, value]) {
-              if (acc.has(key)) {
-                  acc.get(key).push(value);
-              } else {
-                  acc.set(key, [ value ]);
-              }
-              return acc;
-          }, new Map);
+          .reduce((acc, [key, value]) => acc.push(key, value), new ArrayMap);
     $("<ul/>").prependTo($("#watch-header").parent()).append(
         Array.from(
             parallel_iterate(vids.get("url"), vids.get("itag"), vids.get("quality"), vids.get("type")),
