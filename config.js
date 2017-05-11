@@ -433,6 +433,11 @@ inoreader_alternate_view(
     read_comments(/comment on this story/i)
 );
 
+inoreader_alternate_view(
+    "Hacker News",
+    read_comments(/Comments/)
+);
+
 function daily_wtf_alternate_view(div, $, I) {
     const a = div.find("div.article_title a");
     if (a.length === 0) {
