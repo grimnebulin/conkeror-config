@@ -119,6 +119,7 @@ function kill_this_buffer(I) { kill_buffer(I.buffer) }
 
 define_key(gmail_keymap, "{", null, $fallthrough);
 define_key(gmail_keymap, "}", null, $fallthrough);
+define_key(gmail_keymap, "M-c", "copy");
 define_key(gmail_keymap, "M-f", "follow");
 define_key(default_global_keymap, "C-.", next_page);
 define_key(default_global_keymap, "M-b", "bury-buffer");
