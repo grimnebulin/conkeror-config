@@ -343,14 +343,18 @@ function skewer(I) {
     $$(I).script({ src: "http://localhost:8080/skewer" }).appendTo("head");
 }
 
+$$.static.fixed_elements = function () {
+    const position = elem => this.window.getComputedStyle(elem).position;
+    return this("*[id!='comments']").filter(function () { return position(this) === "fixed" });
+};
+
 function nuke_fixed_elements(I) {
-    const $ = $$(I);
-    const removed = $("*[id!='comments']").filter(function () {
-        return $.window.getComputedStyle(this).position === "fixed";
-    }).remove().length;
-    I.minibuffer.message(
-        removed + " element" + (removed != 1 ? "s" : "") + " removed"
-    );
+    const removed = $$(I).fixed_elements().remove().length;
+    I.minibuffer.message(plural(removed, "element") + " removed");
+}
+
+function plural(n, noun) {
+    return n + " " + noun + (n !== 1 ? "s" : "");
 }
 
 //  This method returns a new jQuery object that refers to the
