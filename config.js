@@ -107,6 +107,7 @@ define_webjump(
 );
 
 define_webjump("nfi", "https://www.netflix.com/browse/my-list");
+define_webjump("nfg", "https://www.netflix.com/browse/genre/%s");
 
 const PIRATEBAY_URL = "http://thepiratebay.se/";
 
