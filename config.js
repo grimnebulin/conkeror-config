@@ -462,3 +462,32 @@ inoreader_alternate_view(
     "The Daily WTF",
     daily_wtf_alternate_view
 );
+
+function download_youtube_video(I) {
+    const videos = $$(I).inoreader_current_article("iframe").map(function () {
+        const source = this.getAttribute("src");
+        const match = source && source.match(/^https?:\/\/(?:www\.)?youtube\.com\/embed\/([^?]+)/)
+        return match ? [ match[1] ] : [ ];
+    }).get();
+    if (videos.length > 0) {
+        youtube_videos(videos[0], function (result) {
+            result.select(
+                array => {
+                    if (array.length > 0) {
+                        save_uri(
+                            load_spec(array[0].url),
+                            make_file("/home/mcafee/Desktop/" + (array[0].filename || "video.vid"))
+                        );
+                    }
+                },
+                error => {
+                    I.minibuffer.messsage("Download failed: " + error);
+                }
+            )
+        });
+    } else {
+        I.minibuffer.message("No Youtube iframes found in current article");
+    }
+}
+
+define_key(inoreader_keymap, "C-c C-y", download_youtube_video);
