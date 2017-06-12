@@ -95,7 +95,7 @@ function suggest_save_path(spec, buffer) {
     }
     let dir;
     if (dest.dir === undefined) {
-        dir = get_home_directory().path;
+        dir = get_home_directory().path + "/Desktop";
     } else if (dest.dir.startsWith("/")) {
         dir = dest.dir;
     } else {
