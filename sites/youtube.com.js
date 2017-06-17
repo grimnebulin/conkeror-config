@@ -8,22 +8,19 @@ $.whenFound("div.pyv-afc-ads-container", remove_it);
 const match = buffer.current_uri.asciiSpec.match(/[?&]v=([-\w]+)/);
 
 if (match) {
-    youtube_videos(match[1], yt_info_callback);
+    youtube_videos(match[1], { success: yt_success, error: yt_error });
 }
 
-function yt_info_callback(result) {
-    result.select(
-        array => {
-            $("<ul/>").prependTo($("#watch-header").parent()).append(
-                array.map(info => $("<li/>").append(
-                    $("<a/>").attr("href", info.url).text(
-                        info.type + " (" + info.itag + ") (" + info.quality + ")"
-                    )
-                )[0])
+function yt_success(videos) {
+    $("<ul/>").prependTo($("#watch-header").parent()).append(
+        videos.map(info => $("<li/>").append(
+            $("<a/>").attr("href", info.url).text(
+                info.type + " (" + info.fmt + ") (" + info.quality + ")"
             )
-        },
-        error => {
-            $("<div/>").text(error).prependTo($("#watch-header").parent());
-        }
+        )[0])
     );
+}
+
+function yt_error(message) {
+    $("<div/>").text(message).prependTo($("#watch-header").parent());
 }

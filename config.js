@@ -463,31 +463,28 @@ inoreader_alternate_view(
     daily_wtf_alternate_view
 );
 
-function download_youtube_video(I) {
-    const videos = $$(I).inoreader_current_article("iframe").map(function () {
-        const source = this.getAttribute("src");
-        const match = source && source.match(/^https?:\/\/(?:www\.)?youtube\.com\/embed\/([^?]+)/)
-        return match ? [ match[1] ] : [ ];
-    }).get();
-    if (videos.length > 0) {
-        youtube_videos(videos[0], function (result) {
-            result.select(
-                array => {
-                    if (array.length > 0) {
-                        save_uri(
-                            load_spec(array[0].url),
-                            make_file("/home/mcafee/Desktop/" + (array[0].filename || "video.vid"))
-                        );
-                    }
-                },
-                error => {
-                    I.minibuffer.messsage("Download failed: " + error);
-                }
-            )
-        });
-    } else {
-        I.minibuffer.message("No Youtube iframes found in current article");
+function avgn_alternate_view(div, $, I) {
+    const a = div.find("div.article_title a");
+    if (a.length === 0) {
+        I.minibuffer.message("Article title not found");
+        return;
     }
+    new WebRequest(
+        a.attr("href"),
+        function (document) {
+            const video = document.querySelector("div.videoarea > iframe[src]");
+            if (video) {
+                const match = video.getAttribute("src").match(/\byoutube\.com\/embed\/([^/?]+)/);
+                if (match) {
+                    browser_object_follow(I.buffer, OPEN_NEW_BUFFER, "http://www.youtube.com/watch?v=" + match[1]);
+                }
+            }
+        },
+        "document"
+    ).start();
 }
 
-define_key(inoreader_keymap, "C-c C-y", download_youtube_video);
+inoreader_alternate_view(
+    "AVGN",
+    avgn_alternate_view
+);
