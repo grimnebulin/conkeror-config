@@ -65,7 +65,7 @@ const youtube_videos_callback = function (str, videoId, callbacks) {
         if (vids.has("s")) {
             let [fds, out, err] = make_descriptors();
             const result = yield shell_command_with_argument(
-                "python -c $'import sys, json, pytube\\nprint json.dumps([ v.url for v in pytube.api.YouTube(sys.argv[1]).get_videos() ])' {}",
+                "python -c 'import sys, json, pytube; print json.dumps([ v.url for v in pytube.api.YouTube(sys.argv[1]).get_videos() ])' {}",
                 "http://www.youtube.com/watch?v=" + videoId,
                 $fds = fds
             );
