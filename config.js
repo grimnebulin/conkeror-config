@@ -462,3 +462,29 @@ inoreader_alternate_view(
     "The Daily WTF",
     daily_wtf_alternate_view
 );
+
+function avgn_alternate_view(div, $, I) {
+    const a = div.find("div.article_title a");
+    if (a.length === 0) {
+        I.minibuffer.message("Article title not found");
+        return;
+    }
+    new WebRequest(
+        a.attr("href"),
+        function (document) {
+            const video = document.querySelector("div.videoarea > iframe[src]");
+            if (video) {
+                const match = video.getAttribute("src").match(/\byoutube\.com\/embed\/([^/?]+)/);
+                if (match) {
+                    browser_object_follow(I.buffer, OPEN_NEW_BUFFER, "http://www.youtube.com/watch?v=" + match[1]);
+                }
+            }
+        },
+        "document"
+    ).start();
+}
+
+inoreader_alternate_view(
+    "AVGN",
+    avgn_alternate_view
+);
