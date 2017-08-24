@@ -2,20 +2,14 @@
 
 // autoload_disqus_comments();
 
-//  Remove annoying ads.
+const main = $(".main-post");
 
-$.whenFound("#tallboy-rising-star-outer", remove_it);
+main.nextAll().remove();
 
-$.whenFound("#slideup", remove_it);
+const row = main.closest(".row");
 
-$.whenFound("#adblade", remove_it);
+row.children().filter(function (x) { return $(".main-post", x).length == 0 }).remove();
 
-$.whenFound("iframe[id^='google_ads_iframe']", function () {
-    this.closest("div.widget").remove();
-});
-
-$.whenFound("div > div.ac_adbox", div => div.parent().remove());
-
-$.onDocumentMutation(function () {
-    $("div.tynt-close-btn").click();
-});
+while (!row.next().hasClass("bold-section-title")) {
+    row.next().remove();
+}
