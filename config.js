@@ -46,7 +46,9 @@ define_webjump("jso", "http://japanese.stackexchange.com/");
 define_webjump("sfso", "http://scifi.stackexchange.com/");
 define_webjump("fso", "http://french.stackexchange.com/");
 define_webjump("pgso", "http://codegolf.stackexchange.com/");
+define_webjump("bgso", "https://boardgames.stackexchange.com/");
 define_webjump("mso", "http://math.stackexchange.com/");
+define_webjump("tvso", "https://movies.stackexchange.com/");
 define_webjump("mt", "http://movietickets.com/");
 define_webjump("t", "http://twitter.com/");
 define_webjump("c", "http://coursera.org/");
@@ -57,6 +59,7 @@ define_webjump("gh", "https://github.com/");
 define_webjump("sd", "http://www.scala-lang.org/api/current/index.html#package");
 define_webjump("ebay", "https://www.ebay.com/sch/i.html?_nkw=%s");
 define_webjump("tm", "http://www.thronemaster.net/?goto=gaming&sub=my_games");
+define_webjump("jw", "https://www.justwatch.com/us/search?q=%s");
 
 define_webjump(
     "cx",
