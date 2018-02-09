@@ -277,8 +277,7 @@ function next_page(I) {
         I.minibuffer.message("Found no Next links");
     } else if (links.length > 1) {
         I.minibuffer.message(
-            "Found " + links.length + " possible Next links: " +
-                links.map(x => x.href).join(", ")
+            `Found ${links.length} possible Next links: ${links.map(x => x.href).join(", ")}`
         );
     } else {
         links[0].click();
