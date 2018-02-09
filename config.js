@@ -429,7 +429,7 @@ function read_comments(regex) {
 
 inoreader_alternate_view(
     "Cory Doctorow",
-    read_comments(/^\d+ comments/i)
+    read_comments(/^(\d+ )?comments/i)
 );
 
 inoreader_alternate_view(
