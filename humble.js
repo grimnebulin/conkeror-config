@@ -5,7 +5,8 @@ const rank = x => x === "epub" ? 3 : x === "pdf" ? 2 : x === "mobi" ? 1 : 0;
 function torrent_all_humble_ebooks(I) {
     const $ = $$(I);
     let index = 1000 + Math.round(Math.random() * 10000);
-    const torrents = $("div.js-all-downloads-holder > div.row > div.ebook.show").map(function () {
+
+    const torrents = $("div.js-all-downloads-holder div.row").map(function () {
         const book = $(this);
         const formats = book.find("a.a").map(function () {
             const a = $(this);
@@ -14,7 +15,13 @@ function torrent_all_humble_ebooks(I) {
         }).get();
         return [formats.reduce((a, b) => rank(a[0]) > rank(b[0]) ? a : b)];
     }).get();
-    do_torrent_all_humble_ebooks(torrents, 0, index, []);
+
+    if (torrents.length === 0) {
+        I.minibuffer.message("No torrents found!");
+    } else {
+        do_torrent_all_humble_ebooks(torrents, 0, index, []);
+    }
+
 }
 
 function do_torrent_all_humble_ebooks(torrents, index, base, files) {
