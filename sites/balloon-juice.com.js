@@ -1,2 +1,2 @@
-$.xpath("//div[div[starts-with(@id,'google_ads_')]]").remove();
-
+$("#taboola-below-article-thumbnails").remove();
+$("div.post-delimiter").remove();
