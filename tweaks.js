@@ -81,9 +81,9 @@ function suggest_save_path(spec, buffer) {
     };
     const host = buffer.current_uri.host;
     for (let entry of save_funcs) {
-        if (entry.length == 1 ||
-            entry.length == 2 && (host == entry[0] ||
-                                  host.endsWith("." + entry[0]))) {
+        if (entry.length === 1 ||
+            entry.length === 2 && (host === entry[0] ||
+                                   host.endsWith("." + entry[0]))) {
             try {
                 const record = entry[entry.length - 1](wrapper);
                 if (record)
