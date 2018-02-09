@@ -113,7 +113,7 @@ define_webjump(
 define_webjump("nfi", "https://www.netflix.com/browse/my-list");
 define_webjump("nfg", "https://www.netflix.com/browse/genre/%s");
 
-const PIRATEBAY_URL = "http://thepiratebay.se/";
+const PIRATEBAY_URL = "http://thepiratebay.org/";
 
 define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
 
