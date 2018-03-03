@@ -491,3 +491,15 @@ inoreader_alternate_view(
     "AVGN",
     avgn_alternate_view
 );
+
+function view_with_firefox(div, $, I) {
+    div.inoreader_link().branch(
+        a => shell_command_with_argument_blind("firefox {}", a.attr("href")),
+        () => I.minibuffer.message("Article link not found")
+    );
+}
+
+inoreader_alternate_view(
+    "Left Behind",
+    view_with_firefox
+);
