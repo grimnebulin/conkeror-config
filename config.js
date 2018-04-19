@@ -98,11 +98,21 @@ define_webjump("cp", MANDARIN_TOOLS_SEARCH_URL + "pinyin",
 define_webjump("ce", MANDARIN_TOOLS_SEARCH_URL + "english",
                $alternative = MANDARIN_TOOLS_FALLBACK_URL);
 
-const WWWJDIC_URL = "http://www.csse.monash.edu.au/~jwb/cgi-bin/wwwjdic.cgi?";
+const WWWJDIC_URL = "http://nihongo.monash.edu/cgi-bin/wwwjdic?";
 
-// define_webjump("je",    japanese_search("1E", "dsrchterm"));
-// define_webjump("jj",    japanese_search("1E", "dsrchterm", { dsrchtype: "J" }));
-// define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P" }));
+define_webjump("je",    japanese_search("1E", "dsrchkey", { dicsel: "1" }));
+define_webjump("jj",    japanese_search("1E", "dsrchkey", { dicsel: "1", dsrchtype: "J" }));
+define_webjump("jskip", japanese_search("1D", "ksrchkey", { kanjsel: "P", strcnt: "" }));
+
+function japanese_search(dict, term, extra) {
+    const uri = WWWJDIC_URL + dict;
+    const base = Object.entries(extra || {});
+    return function (arg) {
+        const data = base.slice(0);
+        data.push([ term, arg ]);
+        return load_spec({ uri: uri, post_data: make_post_data(data) });
+    };
+}
 
 define_webjump(
     "nf",
@@ -206,16 +216,6 @@ function piratebay_clean_up_page($) {
     $("div.ad").remove();
     $("iframe").remove();
 }
-
-// Array comprehension bad!
-// function japanese_search(dict, term, extra) {
-//     const uri = WWWJDIC_URL + dict;
-//     const post_data = [ pair for (pair in Iterator(extra || { })) ];
-//     return function (arg) {
-//         const data = make_post_data([[ term, arg ]].concat(post_data));
-//         return load_spec({ uri: uri, post_data: data });
-//     };
-// }
 
 
 const FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
