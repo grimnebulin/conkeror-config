@@ -21,6 +21,7 @@ require("key-kill");
 
 key_kill_mode.test.push(/facebook\.com\//);
 key_kill_mode.test.push(/bbs\.boingboing\.com\//);
+key_kill_mode.test.push(/duckduckgo/);
 
 interactive("kk", "Toggle key-kill-mode", "key-kill-mode");
 
