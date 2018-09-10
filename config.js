@@ -60,7 +60,7 @@ define_webjump("gh", "https://github.com/");
 define_webjump("sd", "http://www.scala-lang.org/api/current/index.html#package");
 define_webjump("ebay", "https://www.ebay.com/sch/i.html?_nkw=%s");
 define_webjump("tm", "http://www.thronemaster.net/?goto=gaming&sub=my_games");
-define_webjump("jw", "https://www.justwatch.com/us/search?q=%s");
+define_webjump("see", "https://www.justwatch.com/us/search?q=%s");
 
 define_webjump(
     "cx",
