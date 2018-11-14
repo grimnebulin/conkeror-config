@@ -125,7 +125,7 @@ define_webjump(
 define_webjump("nfi", "https://www.netflix.com/browse/my-list");
 define_webjump("nfg", "https://www.netflix.com/browse/genre/%s");
 
-const PIRATEBAY_URL = "http://thepiratebay.org/";
+const PIRATEBAY_URL = "http://thepiratebay.se.net/";
 
 define_webjump("pb", piratebay_find_episode, $alternative = PIRATEBAY_URL);
 
@@ -202,7 +202,7 @@ function piratebay_find_episode(arg) {
     const format = x => x.length < 2 ? format("0" + x) : x;
     const matched = ([_, name, season, episode]) =>
           name + " s" + format(season) + "e" + format(episode);
-    return PIRATEBAY_URL + "s/?q=" +
+    return PIRATEBAY_URL + "search/" +
         maybe(arg.match(/^(.*?)\s+0*(\d+)\s+0*(\d+)\s*$/))
         .map(matched)
         .getOrElse(arg);
