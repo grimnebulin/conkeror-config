@@ -146,6 +146,7 @@ define_key(default_global_keymap, "C-context_menu", open_boardgaming_online);
 define_key(default_global_keymap, "C-/", "find-url-new-buffer");
 define_key(duckduckgo_keymap, "C-c C-n", duckduckgo_jump_to_startpage);
 define_key(default_global_keymap, "C-M-k", nuke_fixed_elements);
+define_key(default_global_keymap, "C-M-v", pause_all_videos);
 define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
 
 // Interactives
@@ -505,3 +506,10 @@ inoreader_alternate_view(
     "Left Behind",
     view_with_firefox
 );
+
+function pause_all_videos(I) {
+    const $ = $$(I);
+    const pause = function (jq) { jq("video").each (function () { this.pause() })};
+    pause($);
+    $("iframe").each(function () { pause($$(this.contentWindow)) });
+}
