@@ -12,10 +12,10 @@ if (match) {
 }
 
 function yt_success(videos) {
-    $("<ul/>").prependTo($("#watch-header").parent()).append(
+    $("<ul/>").prependTo($("#info-contents").parent()).append(
         videos.map(info => $("<li/>").append(
             $("<a/>").attr("href", info.url).text(
-                info.type + " (" + info.fmt + ") (" + info.quality + ")"
+                `${info.type} (${info.fmt}) (${info.quality})`
             )
         )[0])
     );
