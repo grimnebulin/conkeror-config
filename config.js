@@ -514,3 +514,12 @@ function pause_all_videos(I) {
     }
     recurse($$(I));
 }
+
+
+{
+    const clipboard = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
+
+    function kill_new(str) {
+        clipboard.copyString(str);
+    }
+}
