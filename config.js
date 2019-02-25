@@ -520,3 +520,5 @@ const clipboard = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIC
 function kill_new(str) {
     clipboard.copyString(str);
 }
+
+$$.fn.kill = function () { kill_new(this.map((_, e) => this.constructor(e).text()).get().join("\n")); return this; };
