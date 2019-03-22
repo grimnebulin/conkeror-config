@@ -510,7 +510,7 @@ inoreader_alternate_view(
 function pause_all_videos(I) {
     function recurse($) {
         $("video").each((_, v) => v.pause());
-        $("iframe").get().map(i => recurse($$(i.contentWindow)));
+        $("iframe").each((_, i) => recurse($$(i.contentWindow)));
     }
     recurse($$(I));
 }
