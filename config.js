@@ -399,7 +399,7 @@ function eval_expression_or_jquery(I) {
         $prompt = "Eval:",
         $history = "eval-expression-or-jquery",
         $completer = new javascript_completer(conkeror));
-    if (s.indexOf("$(") > -1) {
+    if (/\$[(.]/.test(s)) {
         const $ = $$(I);
         var result = eval(s);
     } else {
