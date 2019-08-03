@@ -19,7 +19,8 @@ const parallel_iterate = function (...arrays) {
 
 const youtube_videos_callback = function (str, videoId, callbacks) {
     const flashvars = new Map(vars_of(str));
-    const title = flashvars.get("title").replace(/\+/g, " ").replace(/\//g, "-");
+    var title = flashvars.get("title");
+    if (title) title = title.replace(/\+/g, " ").replace(/\//g, "-");
     const fail = callbacks["error"];
     const success = callbacks["success"];
 
