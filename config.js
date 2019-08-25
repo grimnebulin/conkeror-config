@@ -152,7 +152,6 @@ define_key(content_buffer_normal_keymap, "' p", "browser-object-paste-url");
 // Interactives
 
 interactive("htmlize", "htmlize links", htmlize_links);
-interactive("fb", "open firebug lite", firebug);
 interactive("skewer", "Connect to Emacs", skewer);
 interactive("ff", "Open page in Firefox", open_in_firefox);
 interactive("dm", "Open builtin download manager", "download-manager-show-builtin-ui");
@@ -218,14 +217,6 @@ function piratebay_clean_up_page($) {
 
     $("div.ad").remove();
     $("iframe").remove();
-}
-
-
-const FIREBUG_URL = "http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js";
-
-function firebug(I) {
-    $$(I).script({ src: FIREBUG_URL, onload: "firebug.init()" })
-        .appendTo("body");
 }
 
 // Apply a heuristic to attempt to locate a hyperlink on the current
