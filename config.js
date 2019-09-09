@@ -62,6 +62,8 @@ define_webjump("ebay", "https://www.ebay.com/sch/i.html?_nkw=%s");
 define_webjump("tm", "http://www.thronemaster.net/?goto=gaming&sub=my_games");
 define_webjump("see", "https://www.justwatch.com/us/search?q=%s");
 define_webjump("comics", "https://customer.comichub.com/");
+define_webjump("fsf", "https://forum.members.fsf.org/");
+define_webjump("p", "https://www.reddit.com//r/politics/");
 
 define_webjump(
     "cx",
