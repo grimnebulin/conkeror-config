@@ -4,7 +4,7 @@ const rank = x => x === "epub" ? 3 : x === "pdf" ? 2 : x === "mobi" ? 1 : 0;
 
 function torrent_all_humble_ebooks(I) {
     const $ = $$(I);
-    let index = 1000 + Math.round(Math.random() * 10000);
+    const base = 1000 + Math.round(Math.random() * 10000);
 
     const torrents = $("div.js-all-downloads-holder div.row").map(function () {
         const book = $(this);
@@ -13,13 +13,13 @@ function torrent_all_humble_ebooks(I) {
             const format = a.text().trim().toLowerCase();
             return [[ format, a.attr("href") ]];
         }).get();
-        return [formats.reduce((a, b) => rank(a[0]) > rank(b[0]) ? a : b)];
+        return [ formats.reduce((a, b) => rank(a[0]) > rank(b[0]) ? a : b) ];
     }).get();
 
     if (torrents.length === 0) {
         I.minibuffer.message("No torrents found!");
     } else {
-        do_torrent_all_humble_ebooks(torrents, 0, index, []);
+        do_torrent_all_humble_ebooks(torrents, 0, base, []);
     }
 
 }
@@ -32,6 +32,7 @@ function do_torrent_all_humble_ebooks(torrents, index, base, files) {
     }
 
     const path = OS.Path.join(OS.Constants.Path.tmpDir, `humble-${index+base}.torrent`);
+
     new WebRequest(
         torrents[index][1],
         function (buffer) {
@@ -44,6 +45,7 @@ function do_torrent_all_humble_ebooks(torrents, index, base, files) {
             });
         }
     ).responseType("arraybuffer").start();
+
 }
 
 interactive("torrent-all-humble-ebooks", "torrent ebooks", torrent_all_humble_ebooks);
