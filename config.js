@@ -514,3 +514,9 @@ function kill_new(str) {
 }
 
 $$.fn.kill = function () { kill_new(this.map((_, e) => this.constructor(e).text()).get().join("\n")); return this; };
+
+interactive("reddit-open-comments",
+    "Open the comments-page associated with the currently selected link.",
+    alternates(reddit_open_comments_new_buffer,
+               reddit_open_comments,
+               reddit_open_comments_new_window));
