@@ -45,7 +45,7 @@ interactive("save",
         try {
             var file = yield I.minibuffer.read_file_check_overwrite(
                 $prompt = "Save as:",
-                $initial_value = suggest_save_path(spec, I.buffer),
+                $initial_value = suggest_save_path(spec, I.buffer, element),
                 $history = "save");
         } finally {
             panel.destroy();
@@ -56,9 +56,10 @@ interactive("save",
     },
     $browser_object = browser_object_links);
 
-function suggest_save_path(spec, buffer) {
+function suggest_save_path(spec, buffer, element) {
     const wrapper = spec_wrapper(spec);
     wrapper.page_title = buffer.document.title;
+    wrapper.element = element;
 
     let file_name = wrapper.filename;
     if (! file_name) {

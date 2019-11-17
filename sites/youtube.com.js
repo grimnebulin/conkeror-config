@@ -12,13 +12,14 @@ if (match) {
 }
 
 function yt_success(videos) {
-    $("<ul/>").prependTo($("#info-contents").parent()).append(
-        videos.map(info => $("<li/>").append(
-            $("<a/>").attr("href", info.url).text(
-                `${info.type} (${info.fmt}) (${info.quality})`
-            )
-        )[0])
-    );
+    const li = videos.map(info => {
+        const a = $("<a/>");
+        a.attr("href", info.url);
+        a.attr("data-suffix", info.type.replace(/.*\//, ""));
+        a.text(`${info.type} (${info.fmt}) (${info.quality})`);
+        return $("<li/>").append(a)[0];
+    });
+    $("<ul/>").prependTo($("#info-contents").parent()).append(li);
 }
 
 function yt_error(message) {
