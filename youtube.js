@@ -18,76 +18,37 @@ const parallel_iterate = function (...arrays) {
 };
 
 const youtube_videos_callback = function (str, videoId, callbacks) {
-    const flashvars = new Map(vars_of(str));
-    var title = flashvars.get("title");
+    const vars = new Map(vars_of(str));
+    const response = JSON.parse(vars.get("player_response"));
+    var title = response.videoDetails.title;
     if (title) title = title.replace(/\+/g, " ").replace(/\//g, "-");
-    const fail = callbacks["error"];
-    const success = callbacks["success"];
+    const fail = callbacks.error;
+    const success = callbacks.success;
 
-    if (flashvars.has("errorcode")) {
-        if (flashvars.has("reason")) {
-            if (fail) fail(flashvars.get("reason").replace(/\+/g, " "));
-        } else {
-            if (fail) fail("Error code present, but no reason given.  WTF?");
-        }
+    if (!response.streamingData) {
+        if (fail) fail("Unable to stream");
     } else {
-
-        const format = new Map(
-            flashvars.get("fmt_list").split(/,/).map(x => x.split(/\//))
-        );
-
-        const vids = vars_of(flashvars.get("url_encoded_fmt_stream_map"))
-              .reduce((acc, [key, value]) => acc.push(key, value), new ArrayMap);
-
-        const videos = Array.from(
-            parallel_iterate(vids.get("url"), vids.get("itag"), vids.get("quality"), vids.get("type")),
-            ([url, itag, quality, type]) => {
-                type = type.replace(/;.*/, "");
-                const [_, minor] = type.split(/\//, 2);
-                const fmt = format.get(itag);
-                const match = fmt.match(/^(\d+)x(\d+)$/);
-                const [width, height] = match ? [ match[1], match[2] ].map(x => parseInt(x, 10)) : [ 0, 0 ];
-                const info = {
-                    url: url,
-                    itag: itag,
-                    fmt: fmt,
-                    quality: quality,
-                    type: type,
-                    width: width,
-                    height: height
-                };
-                if (title && /^\w+$/.test(minor)) {
-                    info.filename = title + "." + minor;
-                }
-                return info;
+        const videos = response.streamingData.formats.sort((a, b) => {
+            const asize = a.width * a.height;
+            const bsize = b.width * b.height;
+            return bsize - asize;
+        }).map(fmt => {
+            const type = fmt.mimeType.replace(/;.*/, "");;
+            const [_, minor] = type.split(/\//, 2);
+            const info = {
+                url: fmt.url,
+                itag: fmt.itag,
+                fmt: `${fmt.width}x${fmt.height}`,
+                quality: fmt.quality,
+                type: type,
+                width: fmt.width,
+                height: fmt.height
+            };
+            if (title && /^\w+$/.test(minor)) {
+                info.filename = title + "." + minor;
             }
-        );
-
-        if (vids.has("s")) {
-            let [fds, out, err] = make_descriptors();
-            const result = yield shell_command_with_argument(
-                "python -c 'import sys, json, pytube; print json.dumps([ v.url for v in pytube.api.YouTube(sys.argv[1]).get_videos() ])' {}",
-                "http://www.youtube.com/watch?v=" + videoId,
-                $fds = fds
-            );
-            if (result !== 0) {
-                if (fail) fail(err());
-            } else {
-                JSON.parse(out()).forEach(function (url) {
-                    const params = new URLSearchParams(
-                        make_uri(url).QueryInterface(Ci.nsIURL).query
-                    );
-                    if (params.has("itag")) {
-                        const itag = params.get("itag");
-                        videos.forEach(function (video) {
-                            if (video.itag === itag) {
-                                video.url = url;
-                            }
-                        });
-                    }
-                });
-            }
-        }
+            return info;
+        });
 
         if (success) success(videos);
         
