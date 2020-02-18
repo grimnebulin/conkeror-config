@@ -1,10 +1,12 @@
 Components.utils.import("resource://gre/modules/osfile.jsm");
 
-const rank = x => x === "epub" ? 3 : x === "pdf" ? 2 : x === "mobi" ? 1 : 0;
+const epubRank = x => x === "epub" ? 3 : x === "pdf" ? 2 : x === "mobi" ? 1 : 0;
+const pdfRank = x => x === "pdf" ? 3 : x === "epub" ? 2 : x === "mobi" ? 1 : 0;
 
 function torrent_all_humble_ebooks(I) {
     const $ = $$(I);
     const base = 1000 + Math.round(Math.random() * 10000);
+    const rank = I.prefix_argument ? pdfRank : epubRank;
 
     const torrents = $("div.js-all-downloads-holder div.row").map(function () {
         const book = $(this);
@@ -40,7 +42,7 @@ function do_torrent_all_humble_ebooks(torrents, index, base, files) {
                 fh.write(new DataView(buffer)).then(x => {
                     dumpln(`Written to ${path}`);
                     fh.close(); // .then(...)
-                    do_torrent_all_humble_ebooks(torrents, index + 1, base, files.concat(path))
+                    do_torrent_all_humble_ebooks(torrents, index + 1, base, files.concat(path));
                 });
             });
         }
