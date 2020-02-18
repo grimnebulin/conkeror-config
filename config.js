@@ -520,3 +520,10 @@ interactive("reddit-open-comments",
     alternates(reddit_open_comments_new_buffer,
                reddit_open_comments,
                reddit_open_comments_new_window));
+
+function reddit_controversial(I) {
+    dumpln(I.buffer.current_uri + "?sort=controversail");
+    browser_object_follow(I.buffer, OPEN_CURRENT_BUFFER, I.buffer.current_uri.asciiSpec + "?sort=controversial");
+}
+
+define_key(reddit_keymap, "C-c r s c", reddit_controversial);
